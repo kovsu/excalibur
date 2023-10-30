@@ -12,10 +12,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@egoist/tailwindcss-icons": "^1.4.0",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "jotai": "^2.5.0",
+    "lucide-react": "^0.290.0",
+    "octokit": "^3.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.17.0",
+    "tailwind-merge": "^1.14.0",
+    "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^2.9.1"
   },
   "devDependencies": {
+    "@iconify-json/carbon": "^1.1.21",
     "@kovsu/eslint-config-ts": "^0.2.0",
     "@types/node": "^20.8.9",
     "@types/react": "^18.2.15",
