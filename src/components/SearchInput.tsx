@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { repoAtom } from "@/atoms/repo";
 
 function SearchInput() {
-  const [repoLink, setRepoLink] = useState("");
+  const [repoLink, setRepoLink] = useState("https://github.com/unjs/magicast");
   const { toast } = useToast();
   const [, setRepo] = useAtom(repoAtom);
 

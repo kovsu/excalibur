@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDarkMode } from "usehooks-ts";
 
 function Header() {
-  const { isDarkMode, toggle } = useDarkMode();
+  const { isDarkMode, toggle } = useDarkMode(false);
 
   useEffect(() => {
     if (isDarkMode) {

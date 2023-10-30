@@ -2,7 +2,7 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import ErrorPage from "@/ErrorPage";
+import ErrorPage from "@/pages/ErrorPage";
 import Footer from "@/components/Footer";
 import Detail from "@/pages/Detail";
 import Commits from "@/pages/Commits";

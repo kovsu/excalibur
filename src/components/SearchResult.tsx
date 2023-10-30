@@ -31,7 +31,7 @@ function SearchResult() {
   return (
     <div className="mt-12 flex flex-1 gap-4 items-center">
       <div className="w-1/2 flex justify-center items-center">
-        <img className="w-full" src={logoUrl} alt="logo" />
+        <img className="w-3/5" src={logoUrl} alt="logo" />
       </div>
       <div className="flex-1 flex flex-col gap-8 ">
         <Card className="bg-transparent">
