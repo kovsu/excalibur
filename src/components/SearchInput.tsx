@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { repoAtom } from "@/atoms/repo";
 
 function SearchInput() {
-  const [repoLink, setRepoLink] = useState("https://github.com/unjs/magicast");
+  const [repoLink, setRepoLink] = useState("");
   const { toast } = useToast();
   const [, setRepo] = useAtom(repoAtom);
 
@@ -35,9 +35,9 @@ function SearchInput() {
 
   return (
     <>
-      <p className="text-3xl leading-10 pt-4 pb-8">
-        Search for the <span className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-pink-600">detailed information</span> of a GitHub repository<br />
-        and start learning from its <span className="text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-teal-600">initial commit.</span>
+      <p className="md:text-3xl text-xl leading-10 pt-4 pb-8">
+        Search for the <span className="md:text-5xl text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 to-pink-600">detailed information</span> of a GitHub repository<br />
+        and start learning from its <span className="md:text-6xl text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-teal-600">initial commit.</span>
       </p>
       <div className="flex items-center gap-4 w-rose">
         <Input placeholder="Please input GitHub repo link..." className="bg-transparent" value={repoLink} onChange={e => handleInput(e)} />

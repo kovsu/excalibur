@@ -29,7 +29,7 @@ function SearchResult() {
   const logoUrl = new URL("../assets/logo.svg", import.meta.url).href;
 
   return (
-    <div className="mt-12 flex flex-1 gap-4 items-center">
+    <div className="mt-12 flex flex-col md:flex-row flex-1 gap-4 items-center">
       <div className="w-1/2 flex justify-center items-center">
         <img className="w-3/5" src={logoUrl} alt="logo" />
       </div>

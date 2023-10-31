@@ -30,7 +30,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <div className="px-48 min-h-screen flex flex-col">
+      <div className="xl:px-48 lg:px-32 md:px-24 sm:px-12 px-8 min-h-screen flex flex-col">
         <Header />
         <RouterProvider router={router} />
         <Footer />

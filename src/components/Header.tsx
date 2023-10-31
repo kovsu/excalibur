@@ -18,8 +18,8 @@ function Header() {
   return (
     <header className="py-8 flex items-center gap-4">
       <div className="flex items-center gap-4 mr-auto">
-        <img className="w-10" src="/excalibur.svg" alt="excalibur" />
-        <span className="text-4xl font-bold tracking-wider">Excalibur</span>
+        <img className="md:w-10 w-8" src="/excalibur.svg" alt="excalibur" />
+        <span className="md:text-4xl text-2xl font-bold tracking-wider">Excalibur</span>
       </div>
       <span className={`cursor-pointer ${isDarkMode ? "i-carbon-sun" : "i-carbon-moon"}`} onClick={toggle} />
       <a className="i-carbon-logo-github" href="https://github.com/kovsu/excalibur" target="_blank" />
