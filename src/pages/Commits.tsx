@@ -10,6 +10,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { repoAtom } from "@/atoms/repo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -19,6 +25,7 @@ interface CommitProps {
   name?: string
   date?: string
   message?: string
+  html_url?: string
 }
 
 async function getTotalCommits(owner: string, repo: string) {
@@ -40,7 +47,9 @@ function Commits() {
   const [repo] = useAtom(repoAtom);
   const [commits, setCommits] = useState<CommitProps[]>([]);
   const [page, setPage] = useState(1);
-  const [maxPage, setMaxPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [revert, setRevert] = useState(false);
 
   function handlePageChange(next: boolean) {
     if (!next)
@@ -56,65 +65,91 @@ function Commits() {
     }
 
     async function getCommits() {
+      let pageNum = 1;
       const octokit = new Octokit();
+      setLoading(true);
 
-      const commits = await getTotalCommits(repo[0], repo[1]);
-      setMaxPage(Math.ceil(commits / 10));
+      if (maxPage === 0) {
+        const commits = await getTotalCommits(repo[0], repo[1]);
+        setMaxPage(Math.ceil(commits / 10));
+      }
+
+      if (revert)
+        pageNum = maxPage - page + 1;
+      else
+        pageNum = page;
 
       const { data } = await octokit.request("GET /repos/{owner}/{repo}/commits", {
         owner: repo[0],
         repo: repo[1],
         per_page: 10,
-        page,
+        page: pageNum,
       });
-
-      console.log(data);
 
       const res = data.map((item: any) => {
         return {
           avatar_url: item.author.avatar_url,
           name: item.commit.author.name,
           date: dayjs(item.commit.author.date).format("YYYY/MM/DD"),
-          message: item.commit.message.split("Co-authored-by")[0],
+          message: item.commit.message.split("\n\n")[0],
+          html_url: item.html_url,
         };
       });
 
-      setCommits(res);
+      setCommits(revert ? res.reverse() : res);
+      setLoading(false);
     }
 
     getCommits();
-  }, [repo, page]);
+  }, [repo, page, revert]);
+
+  function toGithubPage(url: string) {
+    window.open(url, "_blank");
+  }
 
   return (
-    <div className="rounded-md border flex-1 flex flex-col">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Author</TableHead>
-            <TableHead>PR Description</TableHead>
-            <TableHead>Time</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {
-            commits.map((commit, index) => (
-              <TableRow key={index}>
-                <TableCell className="flex items-center gap-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={commit.avatar_url} />
-                    <AvatarFallback>{commit.name}</AvatarFallback>
-                  </Avatar>
-                  {commit.name}
-                </TableCell>
-                <TableCell>{commit.message}</TableCell>
-                <TableCell>{commit.date}</TableCell>
-              </TableRow>
-            ))
+    <div className="flex-1 flex flex-col">
+      <div className={`flex-1 ${loading ? "flex justify-center items-center" : ""}`}>
+        <Table loading={loading}>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Author</TableHead>
+              <TableHead>PR Description</TableHead>
+              <TableHead>Time</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {
+              commits.map((commit, index) => (
+                <TableRow key={index} onClick={() => toGithubPage(commit.html_url!)}>
+                  <TableCell className="flex items-center gap-2">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={commit.avatar_url} />
+                      <AvatarFallback>{commit.name}</AvatarFallback>
+                    </Avatar>
+                    {commit.name}
+                  </TableCell>
+                  <TableCell className="">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <p className="text-start">{commit.message}</p>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{commit.message}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  </TableCell>
+                  <TableCell>{commit.date}</TableCell>
+                </TableRow>
+              ))
           }
-        </TableBody>
-      </Table>
-      <div className="flex-1 flex items-center gap-4 px-8 py-4 border-t">
-        <Button className="mr-auto">Revert</Button>
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center gap-4 py-4">
+        <Button className="mr-auto" onClick={() => setRevert(!revert)}>Revert</Button>
         <Button disabled={page === 1} onClick={() => handlePageChange(false)}>Prev</Button>
         <p>{page} / {maxPage}</p>
         <Button disabled={page === maxPage} onClick={() => handlePageChange(true)}>Next</Button>
