@@ -88,7 +88,7 @@ function Commits() {
 
       const res = data.map((item: any) => {
         return {
-          avatar_url: item.author.avatar_url,
+          avatar_url: item.author ? item.author.avatar_url : "https://avatars.githubusercontent.com/u/67543980?v=4",
           name: item.commit.author.name,
           date: dayjs(item.commit.author.date).format("YYYY/MM/DD"),
           message: item.commit.message.split("\n\n")[0],
